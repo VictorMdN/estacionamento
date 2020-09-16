@@ -1,8 +1,6 @@
 package com.victormdn.estacionamento.dto;
 
 import com.victormdn.estacionamento.model.Veiculo;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 public class VeiculoUpdateDTO {
 

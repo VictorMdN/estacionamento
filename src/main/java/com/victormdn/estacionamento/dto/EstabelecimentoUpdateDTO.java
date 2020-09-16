@@ -1,9 +1,6 @@
 package com.victormdn.estacionamento.dto;
 
 import com.victormdn.estacionamento.model.Estabelecimento;
-import com.victormdn.estacionamento.service.EstabelecimentoService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 public class EstabelecimentoUpdateDTO {
 
