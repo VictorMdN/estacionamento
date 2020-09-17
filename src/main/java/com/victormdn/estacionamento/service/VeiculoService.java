@@ -39,8 +39,8 @@ public class VeiculoService {
     public VeiculoPublicDTO save(VeiculoUpdateDTO veiculoUpdateDTO) {
         validateId(veiculoUpdateDTO.getId());
         validadeTipo(veiculoUpdateDTO.getTipo());
-        if(veiculoRepository.countByPlaca(veiculoUpdateDTO.getPlaca()) >
-        veiculoRepository.countByPlacaAndId(veiculoUpdateDTO.getPlaca(), veiculoUpdateDTO.getId()))
+        if(veiculoRepository.countByPlaca(veiculoUpdateDTO.getPlaca()) > 0
+            && !veiculoRepository.findById(veiculoUpdateDTO.getId()).get().getPlaca().equals(veiculoUpdateDTO.getPlaca()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'placa' deve ser único.");
         return VeiculoPublicDTO.create(veiculoRepository.save(veiculoUpdateDTO.toVeiculo(veiculoRepository.findById(veiculoUpdateDTO.getId()).get())));
     }
