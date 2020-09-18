@@ -3,6 +3,7 @@ package com.victormdn.estacionamento.service;
 import com.victormdn.estacionamento.dto.VeiculoInsertDTO;
 import com.victormdn.estacionamento.dto.VeiculoPublicDTO;
 import com.victormdn.estacionamento.dto.VeiculoUpdateDTO;
+import com.victormdn.estacionamento.model.Tipo;
 import com.victormdn.estacionamento.model.Veiculo;
 import com.victormdn.estacionamento.repository.VeiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,8 @@ public class VeiculoService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id deve ser um valor já existente.");
     }
 
-    public static void validadeTipo(String tipo){
-        if(!tipo.equals("carro") && !tipo.equals("moto"))
+    public static void validadeTipo(Tipo tipo){
+        if(!tipo.equals(Tipo.CARRO) && !tipo.equals(Tipo.MOTO))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo tipo deve ser 'carro' ou 'moto'.");
     }
 }

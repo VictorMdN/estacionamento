@@ -30,8 +30,9 @@ public class EstabelecimentoService {
     }
 
     public EstabelecimentoPublicDTO save(EstabelecimentoInsertDTO estabelecimentoInsertDTO) {
-        if(estabelecimentoRepository.countByEndereco(estabelecimentoInsertDTO.getEndereco()) > 0)
+        if(estabelecimentoRepository.countByEndereco(estabelecimentoInsertDTO.getEndereco()) > 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'endereço' deve ser único.");
+        }
         return EstabelecimentoPublicDTO.create(estabelecimentoRepository.save(estabelecimentoInsertDTO.toEstabelecimento()));
     }
 

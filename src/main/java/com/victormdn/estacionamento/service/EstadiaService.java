@@ -3,6 +3,7 @@ package com.victormdn.estacionamento.service;
 import com.victormdn.estacionamento.dto.*;
 import com.victormdn.estacionamento.model.Estabelecimento;
 import com.victormdn.estacionamento.model.Estadia;
+import com.victormdn.estacionamento.model.Tipo;
 import com.victormdn.estacionamento.model.Veiculo;
 import com.victormdn.estacionamento.repository.EstabelecimentoRepository;
 import com.victormdn.estacionamento.repository.EstadiaRepository;
@@ -49,7 +50,7 @@ public class EstadiaService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O veiculo já está estacionado.");
         }
         if(estadiaRepository.locados(estabelecimento.getId(), veiculo.getTipo()).size() >=
-                (veiculo.getTipo().equals("moto")
+                (veiculo.getTipo().equals(Tipo.MOTO)
                         ? estabelecimento.getVagasMoto()
                         : estabelecimento.getVagasCarro()
                 )

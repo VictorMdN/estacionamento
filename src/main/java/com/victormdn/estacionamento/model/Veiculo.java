@@ -1,9 +1,6 @@
 package com.victormdn.estacionamento.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Veiculo {
@@ -27,13 +24,14 @@ public class Veiculo {
     )
     private String placa;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String tipo;
+    private Tipo tipo;
 
     public Veiculo() {
     }
 
-    public Veiculo(Long id, String marca, String modelo, String cor, String placa, String tipo) {
+    public Veiculo(Long id, String marca, String modelo, String cor, String placa, Tipo tipo) {
         this.id = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -82,11 +80,11 @@ public class Veiculo {
         this.placa = placa;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 }
