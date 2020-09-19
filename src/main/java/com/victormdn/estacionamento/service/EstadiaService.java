@@ -3,6 +3,7 @@ package com.victormdn.estacionamento.service;
 import com.victormdn.estacionamento.dto.*;
 import com.victormdn.estacionamento.model.Estabelecimento;
 import com.victormdn.estacionamento.model.Estadia;
+import com.victormdn.estacionamento.model.Tipo;
 import com.victormdn.estacionamento.model.Veiculo;
 import com.victormdn.estacionamento.repository.EstabelecimentoRepository;
 import com.victormdn.estacionamento.repository.EstadiaRepository;
@@ -31,12 +32,12 @@ public class EstadiaService {
 
     public List<EstadiaPublicDTO> findAll() {
         List<EstadiaPublicDTO> ret = new ArrayList<>();
-        for (Estadia estadia : estadiaRepository.findAll()) ret.add(EstadiaPublicDTO.create(estadia));
+        for (Estadia estadia : estadiaRepository.findAll()) ret.add(new EstadiaPublicDTO(estadia));
         return ret;
     }
 
     public EstadiaPublicDTO getById(Long id) {
-        return EstadiaPublicDTO.create(estadiaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new EstadiaPublicDTO(estadiaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
     public EstadiaPublicDTO save(EstadiaInsertDTO estadiaInsertDTO) {
@@ -49,7 +50,7 @@ public class EstadiaService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O veiculo já está estacionado.");
         }
         if(estadiaRepository.locados(estabelecimento.getId(), veiculo.getTipo()).size() >=
-                (veiculo.getTipo().equals("moto")
+                (veiculo.getTipo().equals(Tipo.MOTO)
                         ? estabelecimento.getVagasMoto()
                         : estabelecimento.getVagasCarro()
                 )
@@ -58,7 +59,7 @@ public class EstadiaService {
         }
         Estadia ret = estadiaInsertDTO.toEstadia(veiculo, estabelecimento);
         ret.setEntrada(new Date());
-        return EstadiaPublicDTO.create(estadiaRepository.save(ret));
+        return new EstadiaPublicDTO(estadiaRepository.save(ret));
     }
 
     public EstadiaPublicDTO setSaida(Long id) {
@@ -68,13 +69,13 @@ public class EstadiaService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O veículo já está estacionado.");
         estadia.setSaida(new Date());
         estadiaRepository.save(estadia);
-        return EstadiaPublicDTO.create(estadia);
+        return new EstadiaPublicDTO(estadia);
     }
 
     public EstadiaPublicDTO save(EstadiaUpdateDTO estadiaUpdateDTO) {
         validateId(estadiaUpdateDTO.getId(), estadiaRepository);
 
-        return EstadiaPublicDTO.create(estadiaRepository.save(estadiaUpdateDTO.toEstadia(estadiaRepository.findById(estadiaUpdateDTO.getId()).get())));
+        return new EstadiaPublicDTO(estadiaRepository.save(estadiaUpdateDTO.toEstadia(estadiaRepository.findById(estadiaUpdateDTO.getId()).get())));
     }
 
     public void deleteById(Long id) {
@@ -85,5 +86,13 @@ public class EstadiaService {
     public void validateId(Long id, JpaRepository jpaRepository){
         if(id == null || !jpaRepository.findById(id).isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id deve ser um valor já existente.");
+    }
+
+    public EstadiaRepository getEstadiaRepository() {
+        return estadiaRepository;
+    }
+
+    public void setEstadiaRepository(EstadiaRepository estadiaRepository) {
+        this.estadiaRepository = estadiaRepository;
     }
 }

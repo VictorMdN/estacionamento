@@ -1,6 +1,8 @@
 package com.victormdn.estacionamento.repository;
 
+import com.victormdn.estacionamento.model.Estabelecimento;
 import com.victormdn.estacionamento.model.Estadia;
+import com.victormdn.estacionamento.model.Tipo;
 import com.victormdn.estacionamento.model.Veiculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +18,7 @@ public interface EstadiaRepository extends JpaRepository<Estadia, Long> {
     List<Estadia> estacionado(@Param("veiculo") Long veiculo);
 
     @Query("SELECT e FROM Estadia e WHERE e.estabelecimento.id = :id AND e.veiculo.tipo = :tipo AND e.saida IS NULL")
-    List<Estadia> locados(@Param("id") Long id, @Param("tipo") String tipo);
+    List<Estadia> locados(@Param("id") Long id, @Param("tipo") Tipo tipo);
+
+    List<Estadia> findByEstabelecimento(Estabelecimento estabelecimento);
 }

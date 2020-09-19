@@ -1,5 +1,6 @@
 package com.victormdn.estacionamento.dto;
 
+import com.victormdn.estacionamento.model.Tipo;
 import com.victormdn.estacionamento.model.Veiculo;
 
 public class VeiculoUpdateDTO {
@@ -14,7 +15,7 @@ public class VeiculoUpdateDTO {
 
     private String placa;
 
-    private String tipo;
+    private Tipo tipo;
 
     public Veiculo toVeiculo(Veiculo veiculo) {
         if(marca != null) veiculo.setMarca(marca);
@@ -65,11 +66,11 @@ public class VeiculoUpdateDTO {
         this.placa = placa;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 }

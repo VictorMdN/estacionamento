@@ -1,5 +1,6 @@
 package com.victormdn.estacionamento.dto;
 
+import com.victormdn.estacionamento.model.Tipo;
 import com.victormdn.estacionamento.model.Veiculo;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,7 +15,7 @@ public class VeiculoInsertDTO {
 
     private String placa;
 
-    private String tipo;
+    private Tipo tipo;
 
     public Veiculo toVeiculo() {
         if(marca == null
@@ -58,11 +59,11 @@ public class VeiculoInsertDTO {
         this.placa = placa;
     }
 
-    public String getTipo() {
+    public Tipo getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
 }
