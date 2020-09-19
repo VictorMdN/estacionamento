@@ -31,7 +31,6 @@ public class VeiculoService {
     }
 
     public VeiculoPublicDTO save(VeiculoInsertDTO veiculoInsertDTO) {
-        validadeTipo(veiculoInsertDTO.getTipo());
         if(veiculoRepository.countByPlaca(veiculoInsertDTO.getPlaca()) > 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'placa' deve ser único.");
         return new VeiculoPublicDTO(veiculoRepository.save(veiculoInsertDTO.toVeiculo()));
@@ -39,7 +38,6 @@ public class VeiculoService {
 
     public VeiculoPublicDTO save(VeiculoUpdateDTO veiculoUpdateDTO) {
         validateId(veiculoUpdateDTO.getId());
-        validadeTipo(veiculoUpdateDTO.getTipo());
         if(veiculoRepository.countByPlaca(veiculoUpdateDTO.getPlaca()) > 0
             && !veiculoRepository.findById(veiculoUpdateDTO.getId()).get().getPlaca().equals(veiculoUpdateDTO.getPlaca()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'placa' deve ser único.");
@@ -53,11 +51,6 @@ public class VeiculoService {
 
     public void validateId(Long id){
         if(id == null || !veiculoRepository.findById(id).isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id deve ser um valor já existente.");
-    }
-
-    public static void validadeTipo(Tipo tipo){
-        if(!tipo.equals(Tipo.CARRO) && !tipo.equals(Tipo.MOTO))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo tipo deve ser 'carro' ou 'moto'.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id do veículo deve ser um valor já existente.");
     }
 }
