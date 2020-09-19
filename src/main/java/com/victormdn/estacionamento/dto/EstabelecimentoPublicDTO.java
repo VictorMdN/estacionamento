@@ -18,6 +18,18 @@ public class EstabelecimentoPublicDTO {
 
     private Integer vagasMoto;
 
+    public EstabelecimentoPublicDTO(Estabelecimento estabelecimento){
+        this(
+                estabelecimento.getId(),
+                estabelecimento.getNome(),
+                estabelecimento.getCnpj(),
+                estabelecimento.getEndereco(),
+                estabelecimento.getTelefone(),
+                estabelecimento.getVagasCarro(),
+                estabelecimento.getVagasMoto()
+        );
+    }
+
     public EstabelecimentoPublicDTO(Long id, String nome, String cnpj, String endereco, String telefone, Integer vagasCarro, Integer vagasMoto) {
         this.id = id;
         this.nome = nome;
@@ -26,18 +38,6 @@ public class EstabelecimentoPublicDTO {
         this.telefone = telefone;
         this.vagasCarro = vagasCarro;
         this.vagasMoto = vagasMoto;
-    }
-
-    public static EstabelecimentoPublicDTO create(Estabelecimento estabelecimento) {
-        return new EstabelecimentoPublicDTO(
-                estabelecimento.getId(),
-                estabelecimento.getNome(),
-                estabelecimento.getCnpj(),
-                estabelecimento.getEndereco(),
-                estabelecimento.getTelefone(),
-                estabelecimento.getVagasCarro(),
-                estabelecimento.getVagasMoto()
-                );
     }
 
     public Long getId() {

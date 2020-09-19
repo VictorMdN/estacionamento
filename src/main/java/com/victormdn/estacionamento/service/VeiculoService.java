@@ -22,19 +22,19 @@ public class VeiculoService {
 
     public List<VeiculoPublicDTO> findAll() {
         List<VeiculoPublicDTO> ret = new ArrayList<>();
-        for (Veiculo veiculo : veiculoRepository.findAll()) ret.add(VeiculoPublicDTO.create(veiculo));
+        for (Veiculo veiculo : veiculoRepository.findAll()) ret.add(new VeiculoPublicDTO(veiculo));
         return ret;
     }
 
     public VeiculoPublicDTO getById(Long id) {
-        return VeiculoPublicDTO.create(veiculoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return new VeiculoPublicDTO(veiculoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
     }
 
     public VeiculoPublicDTO save(VeiculoInsertDTO veiculoInsertDTO) {
         validadeTipo(veiculoInsertDTO.getTipo());
         if(veiculoRepository.countByPlaca(veiculoInsertDTO.getPlaca()) > 0)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'placa' deve ser único.");
-        return VeiculoPublicDTO.create(veiculoRepository.save(veiculoInsertDTO.toVeiculo()));
+        return new VeiculoPublicDTO(veiculoRepository.save(veiculoInsertDTO.toVeiculo()));
     }
 
     public VeiculoPublicDTO save(VeiculoUpdateDTO veiculoUpdateDTO) {
@@ -43,7 +43,7 @@ public class VeiculoService {
         if(veiculoRepository.countByPlaca(veiculoUpdateDTO.getPlaca()) > 0
             && !veiculoRepository.findById(veiculoUpdateDTO.getId()).get().getPlaca().equals(veiculoUpdateDTO.getPlaca()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'placa' deve ser único.");
-        return VeiculoPublicDTO.create(veiculoRepository.save(veiculoUpdateDTO.toVeiculo(veiculoRepository.findById(veiculoUpdateDTO.getId()).get())));
+        return new VeiculoPublicDTO(veiculoRepository.save(veiculoUpdateDTO.toVeiculo(veiculoRepository.findById(veiculoUpdateDTO.getId()).get())));
     }
 
     public void deleteById(Long id) {

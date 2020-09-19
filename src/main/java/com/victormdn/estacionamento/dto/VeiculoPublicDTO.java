@@ -17,17 +17,8 @@ public class VeiculoPublicDTO {
 
     private Tipo tipo;
 
-    public VeiculoPublicDTO(Long id, String marca, String modelo, String cor, String placa, Tipo tipo) {
-        this.id = id;
-        this.marca = marca;
-        this.modelo = modelo;
-        this.cor = cor;
-        this.placa = placa;
-        this.tipo = tipo;
-    }
-
-    public static VeiculoPublicDTO create(Veiculo veiculo) {
-        return new VeiculoPublicDTO(
+    public VeiculoPublicDTO(Veiculo veiculo){
+        this(
                 veiculo.getId(),
                 veiculo.getMarca(),
                 veiculo.getModelo(),
@@ -35,6 +26,15 @@ public class VeiculoPublicDTO {
                 veiculo.getPlaca(),
                 veiculo.getTipo()
         );
+    }
+
+    public VeiculoPublicDTO(Long id, String marca, String modelo, String cor, String placa, Tipo tipo) {
+        this.id = id;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.cor = cor;
+        this.placa = placa;
+        this.tipo = tipo;
     }
 
     public Long getId() {

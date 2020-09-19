@@ -1,35 +1,32 @@
 package com.victormdn.estacionamento.dto;
 
 import com.victormdn.estacionamento.model.Estadia;
+import com.victormdn.estacionamento.model.Veiculo;
 
 import java.util.Date;
 
-public class EstadiaPublicDTO {
+public class EstadiaRelatorioDTO {
 
     private Long id;
 
-    private Long veiculo;
-
-    private Long estabelecimento;
+    private Veiculo veiculo;
 
     private Date entrada;
 
     private Date saida;
 
-    public EstadiaPublicDTO(Estadia estadia) {
+    public EstadiaRelatorioDTO(Estadia estadia) {
         this(
                 estadia.getId(),
-                estadia.getVeiculo().getId(),
-                estadia.getEstabelecimento().getId(),
+                estadia.getVeiculo(),
                 estadia.getEntrada(),
                 estadia.getSaida()
         );
     }
 
-    public EstadiaPublicDTO(Long id, Long veiculo, Long estabelecimento, Date entrada, Date saida) {
+    public EstadiaRelatorioDTO(Long id, Veiculo veiculo, Date entrada, Date saida) {
         this.id = id;
         this.veiculo = veiculo;
-        this.estabelecimento = estabelecimento;
         this.entrada = entrada;
         this.saida = saida;
     }
@@ -42,20 +39,12 @@ public class EstadiaPublicDTO {
         this.id = id;
     }
 
-    public Long getVeiculo() {
+    public Veiculo getVeiculo() {
         return veiculo;
     }
 
-    public void setVeiculo(Long veiculo) {
+    public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
-    }
-
-    public Long getEstabelecimento() {
-        return estabelecimento;
-    }
-
-    public void setEstabelecimento(Long estabelecimento) {
-        this.estabelecimento = estabelecimento;
     }
 
     public Date getEntrada() {
