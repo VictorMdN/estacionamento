@@ -52,7 +52,7 @@ public class EstabelecimentoService {
 
     public void validateId(Long id){
         if(id == null || !estabelecimentoRepository.findById(id).isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id deve ser um valor já existente.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id do estabelecimento deve ser um valor já existente.");
     }
 
     public Optional<Estabelecimento> findById(Long id) {

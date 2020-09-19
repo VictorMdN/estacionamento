@@ -45,7 +45,6 @@ public class EstadiaService {
         validateId(estadiaInsertDTO.getEstabelecimento(), estabelecimentoRepository);
         Veiculo veiculo = veiculoRepository.findById(estadiaInsertDTO.getVeiculo()).get();
         Estabelecimento estabelecimento = estabelecimentoRepository.findById(estadiaInsertDTO.getEstabelecimento()).get();
-        VeiculoService.validadeTipo(veiculo.getTipo());
         if(estadiaRepository.estacionado(estadiaInsertDTO.getVeiculo()).size() > 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O veiculo já está estacionado.");
         }
@@ -85,7 +84,7 @@ public class EstadiaService {
 
     public void validateId(Long id, JpaRepository jpaRepository){
         if(id == null || !jpaRepository.findById(id).isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id deve ser um valor já existente.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id do veículo e do estabelecimento devem ser valores já existentes.");
     }
 
     public EstadiaRepository getEstadiaRepository() {
