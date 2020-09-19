@@ -32,7 +32,7 @@ public class EstabelecimentoService {
 
     public EstabelecimentoPublicDTO save(EstabelecimentoInsertDTO estabelecimentoInsertDTO) {
         if(estabelecimentoRepository.countByEndereco(estabelecimentoInsertDTO.getEndereco()) > 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'endereço' deve ser único.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'endereco' deve ser único.");
         }
         return new EstabelecimentoPublicDTO(estabelecimentoRepository.save(estabelecimentoInsertDTO.toEstabelecimento()));
     }
@@ -41,7 +41,7 @@ public class EstabelecimentoService {
         validateId(estabelecimentoUpdateDTO.getId());
         if(estabelecimentoRepository.countByEndereco(estabelecimentoUpdateDTO.getEndereco()) > 0
             && !estabelecimentoRepository.findById(estabelecimentoUpdateDTO.getId()).get().getEndereco().equals(estabelecimentoUpdateDTO.getEndereco()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'endereço' deve ser único.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'endereco' deve ser único.");
         return new EstabelecimentoPublicDTO(estabelecimentoRepository.save(estabelecimentoUpdateDTO.toEstabelecimento(estabelecimentoRepository.findById(estabelecimentoUpdateDTO.getId()).get())));
     }
 

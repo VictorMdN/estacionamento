@@ -1,0 +1,39 @@
+package com.victormdn.estacionamento.dto;
+
+import org.springframework.web.server.ResponseStatusException;
+
+public class ErroDTO {
+
+    private String msg;
+
+    private String cause;
+
+    public ErroDTO(Exception e){
+        if(e instanceof ResponseStatusException){
+            this.msg = e.getMessage();
+            if(e.getCause() != null) this.cause = e.getCause().getMessage();
+        } else {
+            this.msg = "Ocorreu um erro inesperado pelo sistema";
+            this.cause = e.getMessage();
+        }
+    }
+
+    public ErroDTO() {
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getCause() {
+        return cause;
+    }
+
+    public void setCause(String cause) {
+        this.cause = cause;
+    }
+}
