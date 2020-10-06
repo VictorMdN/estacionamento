@@ -24,7 +24,6 @@ public class RelatorioService {
     private EstadiaRepository estadiaRepository;
 
     public EstabelecimentoSumarioDTO sumario(Long id) {
-
         Estabelecimento estabelecimento = estabelecimentoService.validateId(id);
         EstabelecimentoSumarioDTO estabelecimentoSumarioDTO = estabelecimentoService.estabelecimentoToEstabelecimentoSumarioDTO(estabelecimento);
 

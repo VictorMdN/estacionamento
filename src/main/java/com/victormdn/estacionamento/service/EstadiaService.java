@@ -46,7 +46,7 @@ public class EstadiaService {
         Veiculo veiculo = validateId(estadiaInsertDTO.getVeiculo(), veiculoRepository);
         Estabelecimento estabelecimento = validateId(estadiaInsertDTO.getEstabelecimento(), estabelecimentoRepository);
 
-        if(estadiaRepository.findByVeiculoAndSaidaIsNull(validateId(estadiaInsertDTO.getVeiculo(), veiculoRepository)).isPresent())
+        if(estadiaRepository.findByVeiculoAndSaidaIsNull(veiculo).isPresent())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MSG_VEICULO_ESTACIONADO);
         if(estadiaRepository.countByEstabelecimentoIdAndVeiculoTipoAndSaidaIsNull(estabelecimento.getId(), veiculo.getTipo()) >=
                 (veiculo.getTipo().equals(Tipo.MOTO)
