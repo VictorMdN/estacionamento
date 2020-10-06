@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class LogController {
 
     @GetMapping("/logout")
-    public void get(){
-    }
+    public void get(){}
+
 }

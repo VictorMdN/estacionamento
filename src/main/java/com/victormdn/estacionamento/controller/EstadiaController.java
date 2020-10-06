@@ -7,6 +7,7 @@ import com.victormdn.estacionamento.service.EstadiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,8 +27,8 @@ public class EstadiaController {
         return estadiaService.getById(id);
     }
 
-    @PostMapping()
-    public EstadiaPublicDTO post(@RequestBody EstadiaInsertDTO estadiaInsertDTO){
+    @PostMapping
+    public EstadiaPublicDTO post(@RequestBody @Valid EstadiaInsertDTO estadiaInsertDTO){
         return estadiaService.save(estadiaInsertDTO);
     }
 
@@ -36,7 +37,7 @@ public class EstadiaController {
         return estadiaService.setSaida(id);
     }
 
-    @PutMapping()
+    @PutMapping
     public EstadiaPublicDTO put(@RequestBody EstadiaUpdateDTO estadiaUpdateDTO){
         return estadiaService.save(estadiaUpdateDTO);
     }

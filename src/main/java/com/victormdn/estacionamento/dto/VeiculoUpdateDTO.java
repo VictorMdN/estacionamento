@@ -1,8 +1,9 @@
 package com.victormdn.estacionamento.dto;
 
 import com.victormdn.estacionamento.model.Tipo;
-import com.victormdn.estacionamento.model.Veiculo;
+import lombok.Data;
 
+@Data
 public class VeiculoUpdateDTO {
 
     private Long id;
@@ -17,60 +18,4 @@ public class VeiculoUpdateDTO {
 
     private Tipo tipo;
 
-    public Veiculo toVeiculo(Veiculo veiculo) {
-        if(marca != null) veiculo.setMarca(marca);
-        if(modelo != null) veiculo.setModelo(modelo);
-        if(cor != null) veiculo.setCor(cor);
-        if(placa != null) veiculo.setPlaca(placa);
-        if(tipo != null) veiculo.setTipo(tipo);
-        return veiculo;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
-    public String getPlaca() {
-        return placa;
-    }
-
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
-    public Tipo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
 }

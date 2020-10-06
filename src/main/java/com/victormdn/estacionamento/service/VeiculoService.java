@@ -3,45 +3,46 @@ package com.victormdn.estacionamento.service;
 import com.victormdn.estacionamento.dto.VeiculoInsertDTO;
 import com.victormdn.estacionamento.dto.VeiculoPublicDTO;
 import com.victormdn.estacionamento.dto.VeiculoUpdateDTO;
-import com.victormdn.estacionamento.model.Tipo;
 import com.victormdn.estacionamento.model.Veiculo;
 import com.victormdn.estacionamento.repository.VeiculoRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class VeiculoService {
+
+    private static final String MSG_PLACA_UNICA = "O campo 'placa' deve ser único.";
+    private static final String MSG_ID_VAZIO = "O campo id do veículo deve ser um valor de um id de um veículo existente.";
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     private VeiculoRepository veiculoRepository;
 
     public List<VeiculoPublicDTO> findAll() {
-        List<VeiculoPublicDTO> ret = new ArrayList<>();
-        for (Veiculo veiculo : veiculoRepository.findAll()) ret.add(new VeiculoPublicDTO(veiculo));
-        return ret;
+        return veiculoRepository.findAll().parallelStream().map(this::veiculoToVeiculoPublicDTO).collect(Collectors.toList());
     }
 
     public VeiculoPublicDTO getById(Long id) {
-        return new VeiculoPublicDTO(veiculoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        return veiculoToVeiculoPublicDTO(validateId(id));
     }
 
     public VeiculoPublicDTO save(VeiculoInsertDTO veiculoInsertDTO) {
-        if(veiculoRepository.countByPlaca(veiculoInsertDTO.getPlaca()) > 0)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'placa' deve ser único.");
-        return new VeiculoPublicDTO(veiculoRepository.save(veiculoInsertDTO.toVeiculo()));
+        validPlaca(veiculoInsertDTO.getPlaca());
+        return veiculoToVeiculoPublicDTO(veiculoRepository.save(veiculoInsertDTOToVeiculo(veiculoInsertDTO)));
     }
 
     public VeiculoPublicDTO save(VeiculoUpdateDTO veiculoUpdateDTO) {
-        validateId(veiculoUpdateDTO.getId());
-        if(veiculoRepository.countByPlaca(veiculoUpdateDTO.getPlaca()) > 0
-            && !veiculoRepository.findById(veiculoUpdateDTO.getId()).get().getPlaca().equals(veiculoUpdateDTO.getPlaca()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo 'placa' deve ser único.");
-        return new VeiculoPublicDTO(veiculoRepository.save(veiculoUpdateDTO.toVeiculo(veiculoRepository.findById(veiculoUpdateDTO.getId()).get())));
+        Veiculo veiculo = validateId(veiculoUpdateDTO.getId());
+        if(!veiculo.getPlaca().equals(veiculoUpdateDTO.getPlaca())) validPlaca(veiculoUpdateDTO.getPlaca());
+        return veiculoToVeiculoPublicDTO(veiculoRepository.save(veiculoUpdateDTOToVeiculo(veiculoUpdateDTO, veiculo)));
     }
 
     public void deleteById(Long id) {
@@ -49,8 +50,28 @@ public class VeiculoService {
         veiculoRepository.deleteById(id);
     }
 
-    public void validateId(Long id){
-        if(id == null || !veiculoRepository.findById(id).isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O campo id do veículo deve ser um valor já existente.");
+    private void validPlaca(String placa){
+        if(veiculoRepository.findByPlaca(placa).isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MSG_PLACA_UNICA);
     }
+
+    private Veiculo validateId(Long id){
+        return veiculoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, MSG_ID_VAZIO)
+        );
+    }
+
+    private VeiculoPublicDTO veiculoToVeiculoPublicDTO(Veiculo veiculo){
+        return modelMapper.map(veiculo, VeiculoPublicDTO.class);
+    }
+
+    private Veiculo veiculoInsertDTOToVeiculo(VeiculoInsertDTO veiculoInsertDTO){
+        return modelMapper.map(veiculoInsertDTO, Veiculo.class);
+    }
+
+    private Veiculo veiculoUpdateDTOToVeiculo(VeiculoUpdateDTO veiculoUpdateDTO, Veiculo veiculo){
+        modelMapper.map(veiculoUpdateDTO, veiculo);
+        return veiculo;
+    }
+
 }

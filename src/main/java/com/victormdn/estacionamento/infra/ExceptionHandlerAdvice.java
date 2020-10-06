@@ -20,4 +20,5 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<ErroDTO> handleResponseStatusException(Exception e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErroDTO(e));
     }
+
 }

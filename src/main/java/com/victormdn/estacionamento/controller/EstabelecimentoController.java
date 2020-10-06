@@ -7,6 +7,7 @@ import com.victormdn.estacionamento.service.EstabelecimentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,12 +27,12 @@ public class EstabelecimentoController {
         return estabelecimentoService.getById(id);
     }
 
-    @PostMapping()
-    public EstabelecimentoPublicDTO post(@RequestBody EstabelecimentoInsertDTO estabelecimentoInsertDTO){
+    @PostMapping
+    public EstabelecimentoPublicDTO post(@RequestBody @Valid EstabelecimentoInsertDTO estabelecimentoInsertDTO){
         return estabelecimentoService.save(estabelecimentoInsertDTO);
     }
 
-    @PutMapping()
+    @PutMapping
     public EstabelecimentoPublicDTO put(@RequestBody EstabelecimentoUpdateDTO estabelecimentoUpdateDTO){
         return estabelecimentoService.save(estabelecimentoUpdateDTO);
     }
@@ -40,4 +41,5 @@ public class EstabelecimentoController {
     public void delete(@PathVariable Long id){
         estabelecimentoService.deleteById(id);
     }
+
 }

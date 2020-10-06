@@ -6,6 +6,7 @@ import com.victormdn.estacionamento.dto.VeiculoUpdateDTO;
 import com.victormdn.estacionamento.service.VeiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 import java.util.List;
 
@@ -26,12 +27,12 @@ public class VeiculoController {
         return veiculoService.getById(id);
     }
 
-    @PostMapping()
-    public VeiculoPublicDTO post(@RequestBody VeiculoInsertDTO veiculoInsertDTO){
+    @PostMapping
+    public VeiculoPublicDTO post(@RequestBody @Valid VeiculoInsertDTO veiculoInsertDTO){
         return veiculoService.save(veiculoInsertDTO);
     }
 
-    @PutMapping()
+    @PutMapping
     public VeiculoPublicDTO put(@RequestBody VeiculoUpdateDTO veiculoUpdateDTO){
         return veiculoService.save(veiculoUpdateDTO);
     }
@@ -40,4 +41,5 @@ public class VeiculoController {
     public void delete(@PathVariable Long id){
         veiculoService.deleteById(id);
     }
+
 }

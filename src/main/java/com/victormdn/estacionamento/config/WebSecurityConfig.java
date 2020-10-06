@@ -14,12 +14,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String ADMIN = "ADMIN";
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/estabelecimentos/**").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/veiculos/", "/estadias/").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/veiculos/**", "/estadias/**").hasAnyRole("ADMIN")
+                .antMatchers("/estabelecimentos/**").hasAnyRole(ADMIN)
+                .antMatchers(HttpMethod.PUT, "/veiculos", "/estadias").hasAnyRole(ADMIN)
+                .antMatchers(HttpMethod.DELETE, "/veiculos/**", "/estadias/**").hasAnyRole(ADMIN)
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .and().logout()
@@ -31,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth
                 .inMemoryAuthentication()
-                .withUser("adm").password(passwordEncoder().encode("3759")).roles("ADMIN")
+                .withUser("adm").password(passwordEncoder().encode("3759")).roles(ADMIN)
                 .and()
                 .withUser("leo").password(passwordEncoder().encode("7359")).roles("USER")
         ;
@@ -41,4 +43,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 }

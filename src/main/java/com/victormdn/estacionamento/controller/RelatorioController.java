@@ -23,4 +23,5 @@ public class RelatorioController {
     public EstabelecimentoRelatorioDTO relatorio(@PathVariable("id") Long id){
         return relatorioService.relatorio(id);
     }
+
 }

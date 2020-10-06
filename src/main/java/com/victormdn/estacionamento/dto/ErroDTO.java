@@ -1,7 +1,11 @@
 package com.victormdn.estacionamento.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;
 
+@Data
+@NoArgsConstructor
 public class ErroDTO {
 
     private String msg;
@@ -16,24 +20,5 @@ public class ErroDTO {
             this.msg = "Ocorreu um erro inesperado pelo sistema";
             this.cause = e.getMessage();
         }
-    }
-
-    public ErroDTO() {
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public String getCause() {
-        return cause;
-    }
-
-    public void setCause(String cause) {
-        this.cause = cause;
     }
 }
