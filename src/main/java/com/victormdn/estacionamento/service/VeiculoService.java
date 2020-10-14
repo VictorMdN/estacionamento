@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class VeiculoService {
 
-    private static final String MSG_PLACA_UNICA = "O campo 'placa' deve ser único.";
-    private static final String MSG_ID_VAZIO = "O campo id do veículo deve ser um valor de um id de um veículo existente.";
+    public static final String MSG_PLACA_UNICA = "O campo 'placa' deve ser único.";
+    public static final String MSG_ID_VAZIO = "O campo id do veículo deve ser um valor de um id de um veículo existente.";
 
     @Autowired
     private ModelMapper modelMapper;
@@ -35,13 +35,13 @@ public class VeiculoService {
     }
 
     public VeiculoPublicDTO save(VeiculoInsertDTO veiculoInsertDTO) {
-        validPlaca(veiculoInsertDTO.getPlaca());
+        validateNewPlaca(veiculoInsertDTO.getPlaca());
         return veiculoToVeiculoPublicDTO(veiculoRepository.save(veiculoInsertDTOToVeiculo(veiculoInsertDTO)));
     }
 
     public VeiculoPublicDTO save(VeiculoUpdateDTO veiculoUpdateDTO) {
         Veiculo veiculo = validateId(veiculoUpdateDTO.getId());
-        if(!veiculo.getPlaca().equals(veiculoUpdateDTO.getPlaca())) validPlaca(veiculoUpdateDTO.getPlaca());
+        if(!veiculo.getPlaca().equals(veiculoUpdateDTO.getPlaca())) validateNewPlaca(veiculoUpdateDTO.getPlaca());
         return veiculoToVeiculoPublicDTO(veiculoRepository.save(veiculoUpdateDTOToVeiculo(veiculoUpdateDTO, veiculo)));
     }
 
@@ -50,26 +50,26 @@ public class VeiculoService {
         veiculoRepository.deleteById(id);
     }
 
-    private void validPlaca(String placa){
-        if(veiculoRepository.findByPlaca(placa).isPresent())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MSG_PLACA_UNICA);
-    }
-
-    private Veiculo validateId(Long id){
+    public Veiculo validateId(Long id){
         return veiculoRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.BAD_REQUEST, MSG_ID_VAZIO)
         );
     }
 
-    private VeiculoPublicDTO veiculoToVeiculoPublicDTO(Veiculo veiculo){
+    public void validateNewPlaca(String placa){
+        if(veiculoRepository.findByPlaca(placa).isPresent())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, MSG_PLACA_UNICA);
+    }
+
+    public VeiculoPublicDTO veiculoToVeiculoPublicDTO(Veiculo veiculo){
         return modelMapper.map(veiculo, VeiculoPublicDTO.class);
     }
 
-    private Veiculo veiculoInsertDTOToVeiculo(VeiculoInsertDTO veiculoInsertDTO){
+    public Veiculo veiculoInsertDTOToVeiculo(VeiculoInsertDTO veiculoInsertDTO){
         return modelMapper.map(veiculoInsertDTO, Veiculo.class);
     }
 
-    private Veiculo veiculoUpdateDTOToVeiculo(VeiculoUpdateDTO veiculoUpdateDTO, Veiculo veiculo){
+    public Veiculo veiculoUpdateDTOToVeiculo(VeiculoUpdateDTO veiculoUpdateDTO, Veiculo veiculo){
         modelMapper.map(veiculoUpdateDTO, veiculo);
         return veiculo;
     }

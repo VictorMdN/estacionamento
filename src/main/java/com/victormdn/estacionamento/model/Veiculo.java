@@ -1,11 +1,13 @@
 package com.victormdn.estacionamento.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
 public class Veiculo {
 
     @Id

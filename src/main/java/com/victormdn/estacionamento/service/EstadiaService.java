@@ -3,6 +3,7 @@ package com.victormdn.estacionamento.service;
 import com.victormdn.estacionamento.dto.*;
 import com.victormdn.estacionamento.model.*;
 import com.victormdn.estacionamento.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class EstadiaService {
 
     private static final String MSG_VEICULO_ESTACIONADO = "O veiculo já está estacionado.";
@@ -22,17 +24,17 @@ public class EstadiaService {
     private static final String MSG_SEM_VAGAS = "Não há vagas para o veículo.";
     private static final String MSG_ESTADIA_TERMINADA = "Esta estadia já foi finalizada.";
 
-    @Autowired
-    private ModelMapper modelMapper;
+    //@Autowired
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private EstadiaRepository estadiaRepository;
+    //@Autowired
+    private final EstadiaRepository estadiaRepository;
 
-    @Autowired
-    private EstabelecimentoRepository estabelecimentoRepository;
+    //@Autowired
+    private final EstabelecimentoRepository estabelecimentoRepository;
 
-    @Autowired
-    private VeiculoRepository veiculoRepository;
+    //@Autowired
+    private final VeiculoRepository veiculoRepository;
 
     public List<EstadiaPublicDTO> findAll() {
         return estadiaRepository.findAll().parallelStream().map(this::estadiaToEstadiaPublicDTO).collect(Collectors.toList());

@@ -1,9 +1,15 @@
 package com.victormdn.estacionamento.dto;
 
 import com.victormdn.estacionamento.model.Tipo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class VeiculoPublicDTO {
 
     private Long id;
